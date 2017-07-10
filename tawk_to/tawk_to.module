@@ -52,8 +52,8 @@ function tawk_to_page_bottom(array &$page_bottom)
             $options = json_decode($options);
             
             // prepare visibility
+            $currentUrl = $base_url.$_SERVER["REQUEST_URI"];
             if (false==$options->always_display) {
-                $currentUrl = $base_url.$_SERVER["REQUEST_URI"];
 
                 if (\Drupal::service('path.matcher')->isFrontPage()) {
                     if (false==$options->show_onfrontpage) {
@@ -76,6 +76,24 @@ function tawk_to_page_bottom(array &$page_bottom)
                 foreach ($showPages as $slug) {
                     if (stripos($currentUrl, $slug)!==false) {
                         $show = true;
+                        break;
+                    }
+                }
+                
+                if (!$show) {
+                    return;
+                }
+            } else {
+                $hide_pages = json_decode($options->hide_oncustom);
+                $show = true;
+                
+                // $currentUrl = urlencode($current_page);
+                $currentUrl = (string) $currentUrl;
+                foreach ($hide_pages as $slug) {
+                    $slug = (string) htmlspecialchars($slug); // we need to add htmlspecialchars due to slashes added when saving to database
+                    
+                    if (stripos($currentUrl, $slug)!==false) {
+                        $show = false;
                         break;
                     }
                 }
