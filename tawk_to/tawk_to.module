@@ -55,9 +55,22 @@ function tawk_to_page_bottom(array &$page_bottom)
             $currentUrl = $base_url.$_SERVER["REQUEST_URI"];
             if (false==$options->always_display) {
 
+                $showPages = json_decode($options->show_oncustom);
+                $show = false;
+                foreach ($showPages as $slug) {
+                    if (empty(trim($slug))) {
+                        continue;
+                    }
+
+                    if (stripos($currentUrl, $slug)!==false) {
+                        $show = true;
+                        break;
+                    }
+                }
+
                 if (\Drupal::service('path.matcher')->isFrontPage()) {
-                    if (false==$options->show_onfrontpage) {
-                        return;
+                    if (false != $options->show_onfrontpage) {
+                        $show = true;
                     }                
                 }
                 
@@ -71,15 +84,6 @@ function tawk_to_page_bottom(array &$page_bottom)
                 // $current_path = \Drupal::service('path.current')->getPath();
                 // $path_args = explode('/', $current_path);
                 
-                $showPages = json_decode($options->show_oncustom);
-                $show = false;
-                foreach ($showPages as $slug) {
-                    if (stripos($currentUrl, $slug)!==false) {
-                        $show = true;
-                        break;
-                    }
-                }
-                
                 if (!$show) {
                     return;
                 }
@@ -90,6 +94,11 @@ function tawk_to_page_bottom(array &$page_bottom)
                 // $currentUrl = urlencode($current_page);
                 $currentUrl = (string) $currentUrl;
                 foreach ($hide_pages as $slug) {
+
+                    if (empty(trim($slug))) {
+                        continue;
+                    }
+                    
                     $slug = (string) htmlspecialchars($slug); // we need to add htmlspecialchars due to slashes added when saving to database
                     
                     if (stripos($currentUrl, $slug)!==false) {
