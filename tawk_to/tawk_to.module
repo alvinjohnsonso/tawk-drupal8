@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ * @package   Tawk.to module for Drupal
+ * @copyright (C) 2021 Tawk.to
+ * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ */
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\tawk_to\core\TawktoGenerator;

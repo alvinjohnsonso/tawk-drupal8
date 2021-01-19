@@ -1,4 +1,11 @@
 <?php
+/**
+ * @file
+ * @package   Tawk.to module for Drupal
+ * @copyright (C) 2021 Tawk.to
+ * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ */
+
 namespace Drupal\tawk_to\core;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
